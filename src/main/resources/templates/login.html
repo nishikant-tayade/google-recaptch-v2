@@ -1,0 +1,38 @@
+<html>
+<head>
+  <title>reCAPTCHA demo: Simple page</title>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<form action="/verify" method="POST">
+  <div class="g-recaptcha" data-sitekey="" data-callback="onSubmit"></div>
+  <br/>
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+      function onSubmit(token) {
+        // Send the token to your server to verify it
+        $.ajax({
+          type: 'POST',
+          url: '/verify',
+          data: { 'g-recaptcha-response': token },
+          success: function(data) {
+            // Handle the server's response here
+            if (data.success) {
+              $('#welcome-message').text('Welcome!');
+            } else {
+              alert('reCAPTCHA verification failed');
+            }
+          },
+          error: function() {
+            alert('Error verifying reCAPTCHA');
+          }
+        });
+      }
+    </script>
+
+<div id="welcome-message"></div>
+</body>
+</html>
